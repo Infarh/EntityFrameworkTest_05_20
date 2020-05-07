@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 //using System.ComponentModel.DataAnnotations.Schema;
-//using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,8 +14,10 @@ namespace EntityFrameworkTest.Data
         //[Key]
         public int Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string SurName { get; set; }
 
         public string Patronymic { get; set; }
