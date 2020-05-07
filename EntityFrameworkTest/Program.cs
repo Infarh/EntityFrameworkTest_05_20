@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +86,43 @@ namespace EntityFrameworkTest
                     db.SaveChanges();
                 }
 
+
+            using (var db = new StudentsDB())
+            {
+                var empty_courses = db.Courses.Where(course => course.Students.Count() == 0);
+
+                foreach (var course in empty_courses)
+                    Console.WriteLine(course.Name);
+
+                var empty_students = db.Students.Where(student => student.Courses.Count() == 0);
+
+                foreach (var student in empty_students)
+                {
+                    Console.WriteLine("[{0}] {1} {2} {3} {4}",
+                       student.Id, 
+                       student.SurName, 
+                       student.Name, 
+                       student.Patronymic, 
+                       student.Birthday);
+                }
+
+                Console.WriteLine("Студентов без курсов {0}", empty_students.Count());
+
+                var course_info = db.Courses.Select(course => new
+                {
+                    CourseName = course.Name,
+                    StudentsCount = course.Students.Count(),
+                    StudentNames = course.Students.Select(student => student.Name)
+                });
+
+                foreach (var info in course_info)
+                {
+                    Console.WriteLine("{0}({1}) - {2}",
+                        info.CourseName, info.StudentsCount, string.Join(",", info.StudentNames));
+                }
+                    
+
+            }
 
             Console.WriteLine("Конец...");
             Console.ReadLine();
